@@ -11,7 +11,6 @@ classdef JointsTools < handle
 			q_max = [pi pi pi pi pi pi pi];
 			q_min = [-pi -pi -pi -pi -pi -pi -pi];
 			c = ones(1, 7);
-			ass = (inv(jacobian_matrix * inv(weighted_matrix) * transpose(jacobian_matrix)));
 			joint_velocities = inv(weighted_matrix) * transpose(jacobian_matrix) * (inv(jacobian_matrix * inv(weighted_matrix) * transpose(jacobian_matrix))) * end_effector_velocities;
 		end
 		
