@@ -1,0 +1,9 @@
+import PackageName.JointsTools.*
+
+robot = HansCute
+q = [28.8 28.8 -43.2 -36 36 50 -50.4]*pi/180
+robot.model.animate(q)
+q_velocities = ones(1, 7)
+end_effector_velocities = (0, 
+
+JointsTools.get_joint_velocities(q, robot.jacob0(q), 
