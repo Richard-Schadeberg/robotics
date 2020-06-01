@@ -8,8 +8,6 @@ classdef HansCute < handle
         
         %> Flag to indicate if gripper is used
         useGripper = false;
-		
-		jointVelocities = 
     end
     
     methods%% Class for HansCute robot simulation
@@ -21,7 +19,6 @@ function self = HansCute(useGripper)
     
 %> Define the boundaries of the workspace
 
-        
 % robot = 
 self.GetHansCuteRobot();
 % robot = 
@@ -92,12 +89,12 @@ function qMatrix = GetListOfPoses(self, startJoints, goalJoints, numSteps)
 	end
 end
 		%% AnimateRobotMovement
-function AnimateRobotMovement(qMatrix, robot, numSteps, isHolding, points, prop_h, spaceVal)
+function AnimateRobotMovement(qMatrix, robot, numSteps, isHolding, points, prop_h, transform, numPoints)
 	for i=1:numSteps
 		animate(robot.model, qMatrix(i,:));
 		if isHolding == true
 			for j = 1:numPoints
-				prop_h.Vertices(j,:) = transl(chosenRobot.model.fkine(qMatrix(i,:)) * transl(points(j,:)))';
+				prop_h.Vertices(j,:) = transl(robot.model.fkine(qMatrix(i,:)) * transform * transl(points(j,:)))';
 			end
 		end
 		drawnow()
