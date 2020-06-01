@@ -7,7 +7,9 @@ classdef HansCute < handle
         workspace = [-0.8 0.8 -0.8 0.8 0 1];
         
         %> Flag to indicate if gripper is used
-        useGripper = false;        
+        useGripper = false;
+		
+		jointVelocities = 
     end
     
     methods%% Class for HansCute robot simulation
@@ -80,6 +82,26 @@ function PlotAndColourRobot(self)%robot,workspace)
             continue;
         end
     end
+end
+		%% GetListOfPoses
+function qMatrix = GetListOfPoses(self, startJoints, goalJoints, numSteps)
+	trapezoid = lspb(0,1,numSteps);
+	qMatrix = zeros(numSteps, 7);
+	for  i = 1:numSteps
+		qMatrix(i,:) = startJoints + trapezoid(i) * (goalJoints - startJoints);
+	end
+end
+		%% AnimateRobotMovement
+function AnimateRobotMovement(qMatrix, robot, numSteps, isHolding, points, prop_h, spaceVal)
+	for i=1:numSteps
+		animate(robot.model, qMatrix(i,:));
+		if isHolding == true
+			for j = 1:numPoints
+				prop_h.Vertices(j,:) = transl(chosenRobot.model.fkine(qMatrix(i,:)) * transl(points(j,:)))';
+			end
+		end
+		drawnow()
+	end
 end
     end
 end
