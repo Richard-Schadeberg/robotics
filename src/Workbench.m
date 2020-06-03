@@ -1,8 +1,7 @@
-qMax = [2.5 1.8 2.5 1.8 1.8 1.8 2.5];
-qMin = -qMax;
+robot = HansCute;
+
 maxAllowedVelocity = 0.6/30; %taken from hanscute recommended maxspeed in the sourcecode
 clf
-robot = HansCute;
 q = zeros(1, 7);
 robot.model.animate(q);
 breadTr = transl(0.1, 0.1, 0);
@@ -13,12 +12,14 @@ testAnimate(robot, q, qMax, qMin, maxAllowedVelocity, bread, breadTr)
 %% Main Function
 %Used to run demonstration
 function testAnimate(robot, startQ, qMax, qMin, maxAllowedVelocity, bread, breadTr)
+    qMax = robot.model.qlim(:,1)';
+    qMin = robot.model.qlim(:,2)';
     qVelocities=zeros(1,7);
     q=startQ;
 	endEffectorVelocities = transpose([0 0 -0.01 0 0 0]);
    %first location above toast
     endEffectorLocationTr = transl(0.1, 0.1, 0.2) * trotx(pi);
-	goalJoints = robot.model.ikine(endEffectorLocationTr, q, [1 1 1 1 1 1]);
+	goalJoints = robot.model.ikcon(endEffectorLocationTr, q, [1 1 1 1 1 1]);
 	numSteps = 120;
     qMatrix = robot.GetListOfPoses(q, goalJoints, numSteps);
 	isHolding = false;
@@ -66,3 +67,7 @@ function result = HomInvert(transform)
 end
 
 
+space = transl(goal)-transl(start)
+
+
+[space angles]

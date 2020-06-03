@@ -2,10 +2,8 @@ classdef HansCute < handle
     properties
         %> Robot model
         model;
-        
         %>
         workspace = [-0.8 0.8 -0.8 0.8 0 1];
-        
         %> Flag to indicate if gripper is used
         useGripper = false;
     end
@@ -71,13 +69,18 @@ function PlotAndColourRobot(self)%robot,workspace)
     end
 end
 		%% GetListOfPoses
-function qMatrix = GetListOfPoses(self, startJoints, goalJoints, numSteps)
+function qMatrix = getPoseQMatrix(self, startJoints, goalJoints, numSteps)
 	trapezoid = lspb(0,1,numSteps);
 	qMatrix = zeros(numSteps, 7);
 	for  i = 1:numSteps
 		qMatrix(i,:) = startJoints + trapezoid(i) * (goalJoints - startJoints);
 	end
 end
+
+function qMatrix = getCartesianQMatrix(self, startJoints, goalTr)
+    
+end
+
 		%% AnimateRobotMovement
 function AnimateRobotMovement(qMatrix, robot, isHolding, prop, effToPropTr)
     numSteps=size(qMatrix)
