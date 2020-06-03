@@ -18,14 +18,12 @@ self.PlotAndColourRobot();%robot,workspace);
 end
 
 %% GetHansCuteRobot
-% Given a name (optional), create and return a HansCute robot model
+% Create and return a HansCute robot model
 function GetHansCuteRobot(self)
-%     if nargin < 1
-        % Create a unique name (ms timestamp after 1ms pause)
-        pause(0.001);
-        name = ['UR_3_',datestr(now,'yyyymmddTHHMMSSFFF')];
-%     end
-
+    % Create a unique name (ms timestamp after 1ms pause)
+    pause(0.001);
+    name = ['UR_3_',datestr(now,'yyyymmddTHHMMSSFFF')];
+        
     L1 = Link('d',0.15,'a',0,'alpha',pi/2,'offset',0,'qlim',[deg2rad(-360),deg2rad(360)]);
     L2 = Link('d',0,'a',0,'alpha',-pi/2,'offset',0,'qlim',[deg2rad(-360),deg2rad(360)]);
     L3 = Link('d',0.1258,'a',0,'alpha',pi/2,'offset',0,'qlim',[deg2rad(-360),deg2rad(360)]);
@@ -81,13 +79,13 @@ function qMatrix = GetListOfPoses(self, startJoints, goalJoints, numSteps)
 	end
 end
 		%% AnimateRobotMovement
-function AnimateRobotMovement(qMatrix, robot, numSteps, isHolding, points, prop_h, transform, numPoints)
+function AnimateRobotMovement(qMatrix, robot, isHolding, prop, effToPropTr)
+    numSteps=size(qMatrix)
+    numSteps=numSteps(1)
 	for i=1:numSteps
 		animate(robot.model, qMatrix(i,:));
 		if isHolding == true
-			for j = 1:numPoints
-				prop_h.Vertices(j,:) = transl(robot.model.fkine(qMatrix(i,:)) * transform * transl(points(j,:)))';
-			end
+			prop.update_pos(robot.model.fkine(qMatrix(i,:))*effToPropTr)
 		end
 		drawnow()
 	end

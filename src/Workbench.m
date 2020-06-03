@@ -22,7 +22,7 @@ function testAnimate(robot, startQ, qMax, qMin, maxAllowedVelocity, bread, bread
 	numSteps = 120;
     qMatrix = robot.GetListOfPoses(q, goalJoints, numSteps);
 	isHolding = false;
-	AnimateRobotMovement(qMatrix, robot, numSteps, isHolding, 0, 0, 0);
+	AnimateRobotMovement(qMatrix, robot, false, bread, 0);
 	%now toast has been grabbed
 	isHolding = true;
 	q = goalJoints;
